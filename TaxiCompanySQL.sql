@@ -1,0 +1,70 @@
+CREATE DATABASE [TaxiCompany]
+
+CREATE TABLE [Drivers](
+[DriverId] INT PRIMARY KEY IDENTITY (1,1),
+[Name] NVARCHAR (100),
+[PhoneNumber] VARCHAR (MAX)
+)
+CREATE TABLE [Cars](
+[CarId] INT PRIMARY KEY IDENTITY (1,1),
+[LicensePlate] NVARCHAR (10),
+[Model] NVARCHAR (50)
+)
+CREATE TABLE [Customers](
+[CustomerId] INT PRIMARY KEY IDENTITY (1,1),
+[CustomerName] NVARCHAR (100),
+[PhoneNumber] VARCHAR (MAX)
+)
+CREATE TABLE [Rides](
+[RideId] INT PRIMARY KEY IDENTITY (1,1),
+[DriverId] INT FOREIGN KEY REFERENCES Drivers (DriverId) ON DELETE CASCADE ON UPDATE CASCADE,
+[CarId] INT FOREIGN KEY REFERENCES Cars (CarId) ON DELETE SET NULL ON UPDATE CASCADE,
+[CustomerId] INT DEFAULT 1 FOREIGN KEY REFERENCES Customers (CustomerId) ON DELETE SET DEFAULT ON UPDATE SET DEFAULT,
+[PickupLocation] NVARCHAR (100),
+[DropoffLocation] NVARCHAR (100),
+[Fare] DECIMAL (10,2)
+)
+
+INSERT INTO Drivers (Name, PhoneNumber) 
+VALUES 
+(N'???? ??????', '0888123456'),
+(N'????? ??????', '0888234567'),
+(N'?????? ????????', '0888345678'),
+(N'??????? ???????', '0888456789'),
+(N'??????? ????????', '0888567890')
+
+INSERT INTO Cars (LicensePlate, Model)
+VALUES 
+(N'CA1234TP', 'Toyota Prius'),
+(N'CB5678CA', 'Volkswagen Passat'),
+(N'CC9101EB', 'Ford Focus'),
+(N'CA3141HH', 'Mercedes-Benz E-Class'),
+(N'CB2718TT', 'Honda Jazz')
+
+INSERT INTO Customers (CustomerName, PhoneNumber) 
+VALUES 
+(N'???? ???????', '0899123456'),
+(N'???????? ?????', '0899234567'),
+(N'???????? ????????', '0899345678'),
+(N'???????? ??????', '0899456789'),
+(N'?????? ????????', '0899567890')
+
+INSERT INTO Rides (DriverId, CarId, CustomerId, PickupLocation, DropoffLocation, Fare) 
+VALUES 
+(1, 1, 1, N'????? ??????', N'?????', 15.50),
+(2, 2, 2, N'???????', N'??????', 12.00),
+(3, 3, 3, N'???????', N'???????', 18.75),
+(4, 4, 4, N'??????????', N'?????????? ????', 10.00),
+(5, 5, 5, N'???????', N'?????', 20.00)
+
+SELECT * FROM Drivers
+SELECT * FROM Cars
+SELECT * FROM Customers
+SELECT * FROM Rides
+
+DELETE FROM Drivers WHERE DriverId = 1
+DELETE FROM Cars WHERE CarId = 2
+DELETE FROM Customers WHERE CustomerId = 3
+UPDATE Drivers SET Name = N'???? ??????', PhoneNumber = '0888999999' WHERE DriverId = 2
+UPDATE Cars SET Model = 'BMW 5 Series' WHERE CarId = 3
+UPDATE Customers SET CustomerName = N'????? ???????', PhoneNumber = '0899111111' WHERE CustomerId = 4
